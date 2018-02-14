@@ -46,28 +46,49 @@ p_rythm=3 一三四押
     return poetry_txt
 
 import itchat
+import time
 itchat.auto_login()
 friends = itchat.get_friends(update=True)[0:]
 for i in friends:
     name=i['RemarkName']
     uname=i['UserName']
-    if len(name)==2:
-        name_input=name
-        msg0='hey %s,智鹏的新年祝福送上：\n'%name_input
-        msg2=gen_poetry(name_input)[3]
-    elif len(name)==3:
-        name_input=name[1:]
-        msg0='hey %s,智鹏的新年祝福送上：\n'%name_input
-        msg2=gen_poetry(name_input)[3]
-        msg2=msg2.replace('，','\n')
-        msg2=msg2.replace('。','\n')
-    elif len(name)==0:
-        msg0='\n'
-        msg2='\n'
     msg1='智剑霜凝斩新雾\n鹏翼张风期万里\n祝辞回谢递丹霄\n'
     msg3='新歌一曲送祝福\n年年有余五谷丰\n快意人生精神爽\n乐享华年正从容\n万家千户贺新岁\n事随人愿展宏图\n如虎添翼雄风振\n意气奋发英姿酷\n恭祝狗年吉星照\n喜笑颜开沐春风\n发奋图强前锦阔\n财源广进福满屋\n'
-    my_msg=msg0+msg1+msg2+msg3
-    itchat.send(my_msg, toUserName='filehelper')
+    if len(name)==2:
+        name_input=name
+        msg0='hey %s,因考虑到明天会有铺天盖地的祝福短信堵塞网络,有理想有远见且智慧过人未卜先知的举世无双宇宙超级无敌天才提前恭祝新年快乐!万事如意!阖家幸福!\n\n'%name_input
+        try:
+            msg2=gen_poetry(name_input)[3]
+        except:
+            msg2='\n'
+        msg2=msg2.replace('，','\n')
+        msg2=msg2.replace('。','\n')
+        if len(msg2)!=16:
+            msg2='\n'
+        my_msg=msg0+msg1+msg2+msg3
+        print(my_msg)
+        #itchat.send(my_msg, toUserName='filehelper')
+        itchat.send(my_msg, toUserName=uname)
+    elif len(name)==3:
+        name_input=name[1:]
+        msg0='hey %s,因考虑到明天会有铺天盖地的祝福短信堵塞网络,有理想有远见且智慧过人未卜先知的举世无双宇宙超级无敌天才提前恭祝新年快乐!万事如意!阖家幸福!\n\n'%name_input
+        try:
+            msg2=gen_poetry(name_input)[3]
+        except:
+            msg2='\n'
+        msg2=msg2.replace('，','\n')
+        msg2=msg2.replace('。','\n')
+        if len(msg2)!=16:
+            msg2='\n'
+        my_msg=msg0+msg1+msg2+msg3
+        print(my_msg)
+        #itchat.send(my_msg, toUserName='filehelper')
+        itchat.send(my_msg, toUserName=uname)
+    else:
+        continue
+    msg2='\n'
+    time.sleep(10)
+        
 #itchat.send('回复：\n帮我写一首+文字\n获得为你炮制的藏头诗\n例如：\n帮我写一首+新年快乐', toUserName=uname)
 
 import requests
