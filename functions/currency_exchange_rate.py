@@ -1,35 +1,20 @@
-from BeautifulSoup import BeautifulSoup
-import re, urllib, sys, os
-def getweb(url):
-    f = urllib.urlopen(url)
-    data =f.read()
-    f.close()
-    return data
-url = 'http://www.boc.cn/sourcedb/whpj/'
-content = getweb(url)
-soup = BeautifulSoup(''.join(content))
-table_p   = soup.findAll('td', width="86")
-name    = []
-price   = []
-date    = []
-title   = []
-pattern = re.compile('<[^<]*>',re.UNICODE)
-for i in range(len(table_p)):
-  if (i % 8) == 0:
-    s1 = re.sub(pattern,'',unicode(str(table_p[i]),'utf-8'))
-    if i == 0:
-      title.append(s1)
-    else:
-      name.append(s1) 
-  if (i % 8) == 1:
-    s2 = re.sub(pattern ,'',unicode(str(table_p[i]),'utf-8'))
-    if i == 1:
-      title.append(s2)
-    else:
-      price.append(s2)
-  if (i % 8) == 6:
-    s3 = re.sub(pattern,'',unicode(str(table_p[i]),'utf-8'))    
-    if i == 6:
-      title.append(s3)
-    else:
-      date.append(s3)
+from bs4 import BeautifulSoup
+import re, requests, sys, os
+
+def get_exchange_rate(currency):
+    url = 'http://www.boc.cn/sourcedb/whpj/index.html'  # 网址
+    html = requests.get(url).content.decode('utf8')  # 获取网页源码（中间涉及到编码问题,这是个大坑，你得自己摸索）
+    try:
+    # 方式一：正则匹配
+        a = html.index('<td>%s</td>' %currency)  # 
+        s = html[a:a + 300]  # 截取新西兰元汇率那部分内容（从a到a+300位置）
+        result = re.findall('<td>(.*?)</td>', s)  # 正则获取
+        
+        result_msg='现汇买入价：' + result[1] + '\n'
+        result_msg=result_msg+'现钞买入价：' + result[2] + '\n'
+        result_msg=result_msg+'现汇卖出价：' + result[3] + '\n'
+        result_msg=result_msg+'现钞卖出价：' + result[4] + '\n'
+        result_msg=result_msg+'中行折算价：' + result[5] + '\n'
+    except:
+        results_msg='请输入正确的货币中文名'
+    return results_msg
