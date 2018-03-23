@@ -1,3 +1,4 @@
+# install BeautifulSoup4
 from bs4 import BeautifulSoup
 import re, requests, sys, os
 
@@ -16,5 +17,6 @@ def get_exchange_rate(currency):
         result_msg=result_msg+'现钞卖出价：' + result[4] + '\n'
         result_msg=result_msg+'中行折算价：' + result[5] + '\n'
     except:
-        results_msg='请输入正确的货币中文名'
-    return results_msg
+        result_msg='你是说火星币？'
+        print(result_msg)
+    return result_msg
