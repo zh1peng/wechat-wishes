@@ -35,4 +35,5 @@ def thread2(send2review)
 while True: 
     now = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     if now in all2review:
-        print(all2review[now])
+       print(all2review[now])
+       time.sleep(60)
